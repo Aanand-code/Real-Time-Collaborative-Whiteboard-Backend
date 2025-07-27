@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const app = express();
 const port = 3000;
-const server = app.listen(port, () => {
+const server = app.listen(port,  '0.0.0.0', () => {
   console.log(`Server started and running on port ${port}`);
 });
 
