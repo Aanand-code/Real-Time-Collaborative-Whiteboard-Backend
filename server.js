@@ -4,7 +4,7 @@ const path = require('path');
 const cors = require('cors');
 
 const app = express();
-const port = 80;
+const port = 443;
 const server = app.listen(port,  '0.0.0.0', () => {
   console.log(`Server started and running on port ${port}`);
 });
