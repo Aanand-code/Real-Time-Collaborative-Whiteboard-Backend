@@ -4,15 +4,18 @@ const path = require('path');
 const cors = require('cors');
 
 const app = express();
-const port = 443;
-const server = app.listen(port,  '0.0.0.0', () => {
+const port = process.env.PORT || 3000;
+const server = app.listen(port, '0.0.0.0', () => {
   console.log(`Server started and running on port ${port}`);
 });
 
+// CORS Configuration
 app.use(
   cors({
     origin: [
-      'https://aanand-code.github.io/real-time-collaborative-whiteboard-frontend/',
+      'https://aanand-code.github.io/Real-Time-Collaborative-Whiteboard-Frontend/',
+      'https://real-time-collaborative-whiteboard-uove.onrender.com/',
+      'http://localhost:5500',
     ],
   })
 );
@@ -21,12 +24,16 @@ app.use(
 const wss = new WebSocket.Server({
   server,
   verifyClient: (info, done) => {
-    if (
-      info.origin ===
-      'https://aanand-code.github.io/real-time-collaborative-whiteboard-frontend/'
-    ) {
+    const allowedOrigins = [
+      'https://aanand-code.github.io/Real-Time-Collaborative-Whiteboard-Frontend/',
+      'https://real-time-collaborative-whiteboard-uove.onrender.com/',
+      'http://localhost:5500',
+    ];
+
+    if (allowedOrigins.includes(info.origin)) {
       return done(true);
     }
+    console.log('Rejected connection from origin:', info.origin);
     return done(false, 401, 'Unauthorized origin');
   },
 });
@@ -291,3 +298,7 @@ function broadcastToRoomExcept(currentRoom, excludeWs, data) {
     }
   });
 }
+
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
