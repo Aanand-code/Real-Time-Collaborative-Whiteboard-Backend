@@ -11,7 +11,7 @@ const server = app.listen(port, () => {
 app.use(
   cors({
     origin: [
-      'https://aanand-code.github.io/real-time-collaborative-whiteboard-frontend/',
+      'https://aanand-code.github.io/Real-Time-Collaborative-Whiteboard-Frontend/',
     ],
   })
 );
