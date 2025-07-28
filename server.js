@@ -21,50 +21,59 @@ app.use(express.json());
 const allowedOrigins = [
   'https://aanand-code.github.io',
   'https://real-time-collaborative-whiteboard-uove.onrender.com',
-  'http://localhost:5500'
+  'http://localhost:5500',
 ];
 
 // CORS Middleware
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    
-    if (
-      allowedOrigins.some(allowedOrigin => 
-        origin.startsWith(allowedOrigin) || 
-        origin.includes(allowedOrigin.replace('https://', '').replace('http://', ''))
-    ) {
-      return callback(null, true);
-    }
-    console.log('Rejected origin:', origin);
-    return callback(new Error('Not allowed by CORS'));
-  }
-}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (
+        allowedOrigins.some(
+          (allowedOrigin) =>
+            origin.startsWith(allowedOrigin) ||
+            origin.includes(
+              allowedOrigin.replace('https://', '').replace('http://', '')
+            )
+        )
+      ) {
+        return callback(null, true);
+      }
+      console.log('Rejected origin:', origin);
+      return callback(new Error('Not allowed by CORS'));
+    },
+  })
+);
 
 // WebSocket Verification
 const wss = new WebSocket.Server({
   server,
   verifyClient: (info, done) => {
     const origin = info.origin || info.req.headers.origin;
-    
+
     if (!origin) {
       console.log('Allowing connection with no origin');
       return done(true);
     }
 
-    const isAllowed = allowedOrigins.some(allowedOrigin => 
-      origin.startsWith(allowedOrigin) || 
-      origin.includes(allowedOrigin.replace('https://', '').replace('http://', ''))
+    const isAllowed = allowedOrigins.some(
+      (allowedOrigin) =>
+        origin.startsWith(allowedOrigin) ||
+        origin.includes(
+          allowedOrigin.replace('https://', '').replace('http://', '')
+        )
     );
 
     if (isAllowed) {
       console.log('Allowed connection from:', origin);
       return done(true);
     }
-    
+
     console.log('Rejected connection from origin:', origin);
     return done(false, 401, 'Unauthorized origin');
-  }
+  },
 });
 
 // Room management data structures
