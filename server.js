@@ -1,13 +1,17 @@
 const express = require('express');
 const WebSocket = require('ws');
 const path = require('path');
+const http = require('http');
 const cors = require('cors');
 
 const app = express();
+const server = http.createServer(app);
 const port = process.env.PORT || 3000;
-const server = app.listen(port, '0.0.0.0', () => {
+server.listen(port, '0.0.0.0', () => {
   console.log(`Server started and running on port ${port}`);
 });
+
+
 
 // CORS Configuration
 app.use(
