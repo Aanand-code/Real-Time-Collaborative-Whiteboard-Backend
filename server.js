@@ -7,6 +7,11 @@ const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
 const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send('WebSocket server running...');
+});
+
 server.listen(port, '0.0.0.0', () => {
   console.log(`Server started and running on port ${port}`);
 });
