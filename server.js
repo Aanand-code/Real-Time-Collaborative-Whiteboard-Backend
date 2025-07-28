@@ -16,13 +16,12 @@ server.listen(port, '0.0.0.0', () => {
   console.log(`Server started and running on port ${port}`);
 });
 
-
-
+app.use(express.json());
 // CORS Configuration
 app.use(
   cors({
     origin: [
-      'https://aanand-code.github.io/Real-Time-Collaborative-Whiteboard-Frontend/',
+      'https://aanand-code.github.io/',
       'https://real-time-collaborative-whiteboard-uove.onrender.com/',
       'http://localhost:5500',
     ],
@@ -34,7 +33,7 @@ const wss = new WebSocket.Server({
   server,
   verifyClient: (info, done) => {
     const allowedOrigins = [
-      'https://aanand-code.github.io/Real-Time-Collaborative-Whiteboard-Frontend/',
+      'https://aanand-code.github.io/',
       'https://real-time-collaborative-whiteboard-uove.onrender.com/',
       'http://localhost:5500',
     ];
